@@ -512,7 +512,7 @@ export default class SlCarousel extends ShoelaceElement {
     const currentPage = this.getCurrentPage();
     const prevEnabled = this.canScrollPrev();
     const nextEnabled = this.canScrollNext();
-    const isLtr = this.localize.dir() === 'rtl';
+    const isRtl = this.localize.dir() === 'rtl';
 
     return html`
       <div part="base" class="carousel">
@@ -553,7 +553,7 @@ export default class SlCarousel extends ShoelaceElement {
                   @click=${prevEnabled ? () => this.previous() : null}
                 >
                   <slot name="previous-icon">
-                    <sl-icon library="system" name="${isLtr ? 'chevron-left' : 'chevron-right'}"></sl-icon>
+                    <sl-icon library="system" name="${isRtl ? 'chevron-right' : 'chevron-left'}"></sl-icon>
                   </slot>
                 </button>
 
@@ -570,7 +570,7 @@ export default class SlCarousel extends ShoelaceElement {
                   @click=${nextEnabled ? () => this.next() : null}
                 >
                   <slot name="next-icon">
-                    <sl-icon library="system" name="${isLtr ? 'chevron-right' : 'chevron-left'}"></sl-icon>
+                    <sl-icon library="system" name="${isRtl ? 'chevron-left' : 'chevron-right'}"></sl-icon>
                   </slot>
                 </button>
               </div>
