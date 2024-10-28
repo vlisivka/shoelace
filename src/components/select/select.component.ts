@@ -501,7 +501,8 @@ export default class SlSelect extends ShoelaceElement implements ShoelaceFormCon
     }
   }
 
-  private handleDefaultSlotChange() {
+  /* @internal - used by options to update labels */
+  public handleDefaultSlotChange() {
     if (!customElements.get('wa-option')) {
       customElements.whenDefined('wa-option').then(() => this.handleDefaultSlotChange());
     }
