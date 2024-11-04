@@ -774,16 +774,16 @@ describe('<sl-select>', () => {
 
       expect(select.value).to.deep.equal(['foo', 'bar']);
 
-      await clickOnElement(select)
-      await select.updateComplete
-      await clickOnElement(select.querySelector("[value='foo']")!)
+      await clickOnElement(select);
+      await select.updateComplete;
+      await clickOnElement(select.querySelector("[value='foo']")!);
 
-      await select.updateComplete
-      await aTimeout(10)
+      await select.updateComplete;
+      await aTimeout(10);
       expect(select.value).to.deep.equal(['bar']);
 
-      select.setAttribute("value", "foo bar")
-      await aTimeout(10)
+      select.setAttribute('value', 'foo bar');
+      await aTimeout(10);
       expect(select.value).to.deep.equal(['foo', 'bar']);
     });
   });
