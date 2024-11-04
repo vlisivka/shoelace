@@ -673,6 +673,8 @@ export default class SlSelect extends ShoelaceElement implements ShoelaceFormCon
 
   attributeChangedCallback(name: string, oldVal: string | null, newVal: string | null) {
     super.attributeChangedCallback(name, oldVal, newVal);
+
+    /** This is a backwards compatibility call. In a new major version we should make a clean separation between "value" the attribute mapping to "defaultValue" property and "value" the property not reflecting. */
     if (name === 'value') {
       const cachedValueHasChanged = this.valueHasChanged;
       this.value = this.defaultValue;
