@@ -674,12 +674,12 @@ export default class SlSelect extends ShoelaceElement implements ShoelaceFormCon
   @watch(['defaultValue', 'value'], { waitUntilFirstUpdate: true })
   handleValueChange() {
     if (!this.valueHasChanged) {
+      const cachedValueHasChanged = this.valueHasChanged
       this.value = this.defaultValue;
 
       // Set it back to false since this isn't an interaction.
-      this.valueHasChanged = false;
+      this.valueHasChanged = cachedValueHasChanged;
     }
-
     const allOptions = this.getAllOptions();
     const value = Array.isArray(this.value) ? this.value : [this.value];
 
