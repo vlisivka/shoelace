@@ -102,21 +102,42 @@ export default class SlSelect extends ShoelaceElement implements ShoelaceFormCon
   /** The name of the select, submitted as a name/value pair with form data. */
   @property() name = '';
 
+  private _value: string | string[] = ""
+
+  get value () {
+    return this._value
+  }
+
   /**
    * The current value of the select, submitted as a name/value pair with form data. When `multiple` is enabled, the
    * value attribute will be a space-delimited list of values based on the options selected, and the value property will
    * be an array. **For this reason, values must not contain spaces.**
    */
-  @property({
-    converter: {
-      fromAttribute: (value: string) => value.split(' '),
-      toAttribute: (value: string[]) => value.join(' ')
-    }
+  @state({
+    // attribute: false,
+    // converter: {
+    //   fromAttribute: (value: string) => value.split(' '),
+    //   toAttribute: (value: string[]) => value.join(' ')
+    // }
   })
-  value: string | string[] = '';
+  set value (val: string | string[]) {
+    if (this.multiple) {
+      val = Array.isArray(val) ? val : val.split(" ")
+    } else {
+      val = Array.isArray(val) ? val.join(" ") : val
+    }
+
+    if (this._value === val) {
+      return
+    }
+
+    this.valueHasChanged = true
+
+    this._value = val
+  }
 
   /** The default value of the form control. Primarily used for resetting the form control. */
-  @defaultValue() defaultValue: string | string[] = '';
+  @property({ attribute: "value" }) defaultValue: string | string[] = '';
 
   /** The select's size. */
   @property({ reflect: true }) size: 'small' | 'medium' | 'large' = 'medium';
@@ -598,6 +619,7 @@ export default class SlSelect extends ShoelaceElement implements ShoelaceFormCon
     // Update selected options cache
     this.selectedOptions = options.filter(el => el.selected);
 
+    const cachedValueHasChanged = this.valueHasChanged
     // Update the value and display label
     if (this.multiple) {
       this.value = this.selectedOptions.map(el => el.value);
@@ -613,12 +635,14 @@ export default class SlSelect extends ShoelaceElement implements ShoelaceFormCon
       this.value = selectedOption?.value ?? '';
       this.displayLabel = selectedOption?.getTextLabel?.() ?? '';
     }
+    this.valueHasChanged = cachedValueHasChanged
 
     // Update validity
     this.updateComplete.then(() => {
       this.formControlController.updateValidity();
     });
   }
+
   protected get tags() {
     return this.selectedOptions.map((option, index) => {
       if (index < this.maxOptionsVisible || this.maxOptionsVisible <= 0) {
@@ -649,8 +673,13 @@ export default class SlSelect extends ShoelaceElement implements ShoelaceFormCon
     }
   }
 
-  @watch('value', { waitUntilFirstUpdate: true })
+  @watch(['defaultValue', 'value'], { waitUntilFirstUpdate: true })
   handleValueChange() {
+    if (!this.valueHasChanged) {
+      this.value = this.defaultValue
+      this.valueHasChanged = false
+    }
+
     const allOptions = this.getAllOptions();
     const value = Array.isArray(this.value) ? this.value : [this.value];
 

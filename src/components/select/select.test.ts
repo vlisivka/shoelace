@@ -740,6 +740,25 @@ describe('<sl-select>', () => {
         expect(new FormData(form).getAll('select')).to.have.members(['foo', 'bar', 'baz']);
       });
     });
+
+    /**
+     * @see {https://github.com/shoelace-style/shoelace/issues/2254}
+     */
+    it('Should account for if `value` changed before connecting', async () => {
+			const select = await fixture<SlSelect>(html`
+	      <sl-select label="Search By" multiple clearable .value=${["foo", "bar"]}>
+	        <sl-option value="foo">Foo</sl-option>
+	        <sl-option value="bar">Bar</sl-option>
+	      </sl-select>
+	    `)
+
+      // just for safe measure.
+      await aTimeout(10)
+
+      expect(select.value).to.deep.equal(["foo", "bar"])
+
+    })
+
   });
 
   runFormControlBaseTests('sl-select');
