@@ -112,13 +112,7 @@ export default class SlSelect extends ShoelaceElement implements ShoelaceFormCon
    * value attribute will be a space-delimited list of values based on the options selected, and the value property will
    * be an array. **For this reason, values must not contain spaces.**
    */
-  @state({
-    // attribute: false,
-    // converter: {
-    //   fromAttribute: (value: string) => value.split(' '),
-    //   toAttribute: (value: string[]) => value.join(' ')
-    // }
-  })
+  @state()
   set value(val: string | string[]) {
     if (this.multiple) {
       val = Array.isArray(val) ? val : val.split(' ');
@@ -131,7 +125,6 @@ export default class SlSelect extends ShoelaceElement implements ShoelaceFormCon
     }
 
     this.valueHasChanged = true;
-
     this._value = val;
   }
 
@@ -618,7 +611,9 @@ export default class SlSelect extends ShoelaceElement implements ShoelaceFormCon
     // Update selected options cache
     this.selectedOptions = options.filter(el => el.selected);
 
+    // Keep a reference to the previous `valueHasChanged`. Changes made here don't count has changing the value.
     const cachedValueHasChanged = this.valueHasChanged;
+
     // Update the value and display label
     if (this.multiple) {
       this.value = this.selectedOptions.map(el => el.value);
@@ -676,6 +671,8 @@ export default class SlSelect extends ShoelaceElement implements ShoelaceFormCon
   handleValueChange() {
     if (!this.valueHasChanged) {
       this.value = this.defaultValue;
+
+      // Set it back to false since this isn't an interaction.
       this.valueHasChanged = false;
     }
 
