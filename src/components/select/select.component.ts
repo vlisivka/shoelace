@@ -464,6 +464,8 @@ export default class SlSelect extends ShoelaceElement implements ShoelaceFormCon
   private handleClearClick(event: MouseEvent) {
     event.stopPropagation();
 
+    this.valueHasChanged = true
+
     if (this.value !== '') {
       this.setSelectedOptions([]);
       this.displayInput.focus({ preventScroll: true });
@@ -534,6 +536,8 @@ export default class SlSelect extends ShoelaceElement implements ShoelaceFormCon
 
   private handleTagRemove(event: SlRemoveEvent, option: SlOption) {
     event.stopPropagation();
+
+    this.valueHasChanged = true
 
     if (!this.disabled) {
       this.toggleOptionSelection(option, false);
