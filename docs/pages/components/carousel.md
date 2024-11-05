@@ -6,7 +6,6 @@ layout: component
 ---
 
 ```html:preview
-<sl-resize-observer>
 <sl-carousel pagination navigation mouse-dragging loop>
   <sl-carousel-item>
     <img
@@ -39,7 +38,6 @@ layout: component
     />
   </sl-carousel-item>
 </sl-carousel>
-</sl-resize-observer>
 ```
 
 ```jsx:react
