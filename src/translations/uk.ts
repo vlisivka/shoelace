@@ -18,9 +18,11 @@ const translation: Translation = {
   loading: 'Завантаження',
   nextSlide: 'Наступний слайд',
   numOptionsSelected: num => {
-    if (num === 0) return 'вибрано 0 вариантів';
-    if (num === 1) return 'вибрано 1 варіант';
-    return `вибрано ${num} варіанти`;
+    var n = num % 10;
+    if (n === 0) return 'не вибрано варіантів';
+    if (n === 1) return 'вибрано 1 варіант';
+    if (n === 2 || n === 3 || n === 4) return `вибрано ${num} варіанти`;
+    return `вибрано ${num} варіантів`;
   },
   previousSlide: 'Попередній слайд',
   progress: 'Поступ',
